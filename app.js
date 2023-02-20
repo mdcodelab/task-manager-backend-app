@@ -3,6 +3,10 @@ const express=require("express")
 const app = express()
 require("dotenv").config()
 
+
+const notFound = require("./middleware/not-found")
+app.use(notFound)
+
 //routes
 const tasks=require("./routes/tasks");
 app.use('/api/v1/tasks', tasks)
@@ -15,6 +19,7 @@ const connectDB = require("./db/connect")
 
 //middleware
 app.use(express.json());
+
 
 
 //app.get("/api/v1/tasks") - get all the tasks
