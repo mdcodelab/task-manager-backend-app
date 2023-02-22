@@ -10,7 +10,7 @@ const errorHandlerMiddleware = require('./middleware/error-handler');
 //middleware
 app.use(express.json());
 
-const port=3000;
+const port=process.env.PORT || 3000;
 
 //routes
 app.use('/api/v1/tasks', tasks)
@@ -36,7 +36,7 @@ const start = async () => {
     try {
         await connectDB(process.env.MONGO_URI)
         console.log("connected to DB")
-        app.listen(3000, () => {
+        app.listen(port, () => {
             console.log(`server is listening on port ${port}...`)
         })
     } catch (error) {
