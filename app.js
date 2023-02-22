@@ -1,24 +1,21 @@
-const express=require("express")
+const express = require('express');
+const app = express();
+const tasks = require('./routes/tasks');
+const connectDB = require('./db/connect');
+require('dotenv').config();
+const notFound = require('./middleware/not-found');
 
-const app = express()
-require("dotenv").config()
-
-
-const notFound = require("./middleware/not-found")
-app.use(notFound)
-
-//routes
-const tasks=require("./routes/tasks");
-app.use('/api/v1/tasks', tasks)
-
-//port
-const port = 3000
-
-//MDB CONNECT
-const connectDB = require("./db/connect")
 
 //middleware
 app.use(express.json());
+
+const port=3000;
+
+//routes
+app.use('/api/v1/tasks', tasks)
+
+app.use(notFound)
+
 
 
 
@@ -41,9 +38,8 @@ const start = async () => {
             console.log(`server is listening on port ${port}...`)
         })
     } catch (error) {
-        console.log(err)
+        console.log(error)
     }
 }
 
 start()
-

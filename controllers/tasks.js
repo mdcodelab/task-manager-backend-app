@@ -1,57 +1,42 @@
-
 const Task=require("../models/task")
+const asyncWrapper = require("../middleware/async");
 
 
-const getAllTasks= async (req, res) => {
-    try {
+const getAllTasks= asyncWrapper( async (req, res) => {
         const tasks=await Task.find({})
         res.status(200).json({tasks})
-    } catch (error) {
-        res.status(500).json({msg: error})
-        
-    }
-}
+})
 
 
-const createTask= async (req, res) => {
-   try {
+const createTask= asyncWrapper(async (req, res) => {
      const task = await Task.create(req.body)
      res.status(201).json({task});
-   } catch (error) {
-    res.status(500).json({msg: error})
-   }
+   
     }
+)
 
 
-const getTask = async (req, res) => {
-    try {
+const getTask = asyncWrapper (async (req, res) => {
         const {id}=req.params
        const task= await Task.findOne({_id: id}) 
         res.status(200).json({task})
         if(!task) {
             return res.status(404).json({msg: `No rask with id: ${id}`})
-        }
-    } catch (error) {
-      res.status(500).json({msg: error})  
-    }
+        } 
 }
+)
 
 
-const deleteTask = async (req, res) => {
-    try {
+const deleteTask = asyncWrapper(async (req, res) => {
        const {id}=req.params
        let task = await Task.findOneAndDelete({_id: id})
        res.status(200).json({task})
        if(!task) {
         return res.status(404).json({msg: `The task with id: ${id} dies not exist`})
        }
-    } catch (error) {
-      res.status(500).json({msg: error})  
-    }
-    }
+    })
 
-    const updateTask = async (req, res) => {
-        try {
+    const updateTask = asyncWrapper(async (req, res) => {
            const {id}=req.params;
             const task = await Task.findOneAndUpdate({_id: id}, req.body, {
                 new: true, runValidators: true
@@ -60,10 +45,9 @@ const deleteTask = async (req, res) => {
            if(!task) {
             return res.status(404).json({msg: `The task with id: ${id} dies not exist`})
            }
-        } catch (error) {
-            res.status(500).json({msg: error})
-        }
-        }
+        } 
+        
+    )
 
 
 module.exports = {
